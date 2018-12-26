@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+
 import Person from './Person/Person';
 
 class App extends Component {
@@ -79,6 +80,10 @@ class App extends Component {
       );
 
       style.backgroundColor = 'red';
+      style[':hover'] = {
+        backgroundColor: 'pink',
+        color: 'black'
+      };
     }
     let classes = [];
     if (this.state.persons.length <= 2) {
@@ -88,16 +93,17 @@ class App extends Component {
       classes.push('bold'); //classes = ['red', 'bold']
     }
     return (
-      <div className="App">
-        <h1>Hi, I'm a React App</h1>
-        <h1>Still making components</h1>
-        <p className={classes.join(' ')}>This is really working too!</p>
-        <button 
-        style={style}
-        onClick={this.togglePersonHandler} >Switch Name</button>
-        {persons}
-         
-      </div>
+        <div className="App">
+          <h1>Hi, I'm a React App</h1>
+          <h1>Still making components</h1>
+          <p className={classes.join(' ')}>This is really working too!</p>
+          <button 
+          style={style}
+          onClick={this.togglePersonHandler} >Switch Name</button>
+          {persons}
+          
+        </div>
+     
     );
     // return React.createElement('div', null, React.createElement('h1', {className: 'App'}, 'Does this work now?'))
   }
