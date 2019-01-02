@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 
 import Person from './Person/Person';
 
@@ -20,25 +20,18 @@ class App extends Component {
       return p.id === id;
     });
 
-  const person = {
-    ...this.state.persons[personIndex]
-  };
-  // This is an alternative to the above. Using ... is more modern but they do they same thing. 
-  // const person = Object.assign({}, this.state.persons[personIndex])
-  person.name = event.target.value;
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+    // This is an alternative to the above. Using ... is more modern but they do they same thing. 
+    // const person = Object.assign({}, this.state.persons[personIndex])
 
-  const persons = [...this.state.persons];
-  persons[personIndex] = person;
+    person.name = event.target.value;
 
-    this.setState({
-      persons: [
-        { name: event.target.value, age: 33 },
-        { name: event.target.value, age: 37 },
-        { name: event.target.value, age: 2 },
-        { name: event.target.value, age: 4 }
-      ],
-      
-    } )
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({ persons: persons} )
   }
 
   deletePersonHandler = (personIndex) => {
@@ -54,16 +47,9 @@ class App extends Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    };
 
     let persons = null;
+    let btnClass = '';
 
     if (this.state.showPersons) {
       persons = (
@@ -78,27 +64,22 @@ class App extends Component {
         })}
        </div>
       );
-
-      style.backgroundColor = 'red';
-      style[':hover'] = {
-        backgroundColor: 'pink',
-        color: 'black'
-      };
+      btnClass = classes.Red;
     }
-    let classes = [];
+    let assignedClasses = [];
     if (this.state.persons.length <= 2) {
-      classes.push('red'); //classes = ['red']
+      assignedClasses.push(classes.red); //classes = ['red']
     }
     if (this.state.persons.length <= 1) {
-      classes.push('bold'); //classes = ['red', 'bold']
+      assignedClasses.push(classes.bold); //classes = ['red', 'bold']
     }
     return (
-        <div className="App">
+        <div className={classes.App}>
           <h1>Hi, I'm a React App</h1>
           <h1>Still making components</h1>
-          <p className={classes.join(' ')}>This is really working too!</p>
+          <p className={assignedClasses.join(' ')}>This is really working too!</p>
           <button 
-          style={style}
+          className={btnClass}
           onClick={this.togglePersonHandler} >Switch Name</button>
           {persons}
           
