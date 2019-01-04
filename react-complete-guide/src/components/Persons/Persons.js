@@ -1,29 +1,31 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Person from './Person/Person'
 
-class Persons extends Component {
-    constructor(props) {
-        super(props);
-        console.log('[Persons.js] Inside Constructor', props);
+class Persons extends PureComponent {
+    constructor( props ) {
+        super( props );
+        console.log('[Persons.js] Inside Constructor', props );
       }
     
       componentWillMount () {
-        console.log('[Persons.js] Inside componentWillMount', this.props);
+        console.log('[Persons.js] Inside componentWillMount', this.props );
       }
     
       componentDidMount () {
         console.log('[Persons.js] Inside componentDidMount');
       }
 
-      componentWillReceiveProps (nextProps) {
-          console.log('[Update Persons.js] Inside ComponentWillRecieveProps', nextProps);
+      componentWillReceiveProps ( nextProps ) {
+          console.log('[Update Persons.js] Inside ComponentWillRecieveProps', nextProps );
       }
 
-      shouldComponentUpdate (nextProps, nextState) {
-          console.log('[Update Perons.js] Inside shouldComponentUpdate', nextProps, nextState);
-        //   return nextProps.person !== this.props.persons;
-        return true;
-      }
+    //   shouldComponentUpdate (nextProps, nextState) {
+    //       console.log('[Update Perons.js] Inside shouldComponentUpdate', nextProps, nextState);
+    //       return nextProps.persons !== this.props.persons ||
+    //       nextProps.changed !== this.props.changed ||
+    //       nextProps.clicked !== this.props.clicked;
+        // return true;
+    //   }
 
       componentWillUpdate (nextProps, nextState) {
           console.log('[Update Persons.js Indside componentWillUpdate', nextProps, nextState)
