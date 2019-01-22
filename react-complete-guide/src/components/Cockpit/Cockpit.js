@@ -1,13 +1,14 @@
 import React from 'react';
 
 import classes from './Cockpit.css'
+import Aux from '../../hoc/Aux'
 
 const cockpit = ( props ) => {
     const assignedClasses = [];
-    let btnClass = '';
+    let btnClass = classes.Button;
 
     if (props.showPersons) {
-        btnClass = classes.Red;
+        btnClass = [classes.Button, classes.Red].join(' ');
     }
     if (props.persons.length <= 2) {
       assignedClasses.push( classes.red ); //classes = ['red']
@@ -16,15 +17,20 @@ const cockpit = ( props ) => {
       assignedClasses.push(classes.bold); //classes = ['red', 'bold']
     }
     return (
-        <div className={classes.Cockpit}>
+        <Aux>
             <h1>{ props.appTitle }</h1>
             <h1>Still making components</h1>
-            <p className={assignedClasses.join(' ')}>This is really working too!</p>
+            <p className={assignedClasses.join( ' ' )}>This is really working too!</p>
             <button 
-            className={btnClass}
-            onClick={props.clicked} >Toggle Persons</button>
-        </div>
+                className={btnClass}
+                onClick={props.clicked} >Toggle Persons
+            </button>
+            <button
+                onClick={props.login}
+                >Log In
+            </button>
+        </Aux>
     );
 }
 
-export default cockpit;
+export default React.memo(cockpit);

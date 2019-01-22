@@ -3,6 +3,10 @@ import React, { PureComponent } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import Aux from '../hoc/Aux';
+import withClass from '../hoc/withClass';
+
+export const AuthContext = React.createContext(false);
 
 class App extends PureComponent {
   constructor(props) {
@@ -14,8 +18,9 @@ class App extends PureComponent {
         { id: 'bt' ,name: 'Florence', age: 2 },
         { id: 'qp' ,name: 'Winter', age: 4 }
       ],
-      showPersons: false
-  
+      showPersons: false,
+      toggleClicked: 0,
+      authenticated: false,
     }
     console.log('[App.js] Inside Constructor', props);
     //This is the more current way to declare state but you can declare it in the constructor. It works the same. 
@@ -46,7 +51,24 @@ class App extends PureComponent {
   // }
 
   componentWillUpdate ( nextProps, nextState ) {
-      console.log('[Update App.js Indside componentWillUpdate', nextProps, nextState)
+      console.log(
+        '[Update App.js Indside componentWillUpdate', nextProps, 
+        nextState
+      );
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(
+      '[Update App.js] Indside getDerivedStateFromProps', nextProps, 
+       prevState
+    );
+    return prevState;
+  }
+
+  getSnapshotBeforeUpdate() {
+    console.log(
+      '[Update App.js] Indside getSnapshotBeforeUpdate' 
+    );
   }
 
   componentDidUpdate () {
@@ -82,7 +104,16 @@ class App extends PureComponent {
 
   togglePersonHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow});
+    this.setState( (prevState, props) => {
+      return {
+       showPersons: !doesShow, 
+       toggleClicked: prevState.toggleClicked + 1 
+      }
+    } );
+  }
+
+  loginHandler = () => {
+    this.setState({authenticated: true});
   }
 
   render() {
@@ -90,29 +121,27 @@ class App extends PureComponent {
     let persons = null;
 
     if (this.state.showPersons) {
-      persons = (
-          <Persons
+      persons = <Persons        
             persons={this.state.persons}
             clicked={this.deletePersonHandler}
-            changed={this.nameChangedHandler} />
-      );
+            changed={this.nameChangedHandler}
+             />;   
     }
-    
+  
     return (
-        <div className={classes.App}>
-          <button onClick={ () => {this.setState( { showPersons: true } ) } }>Show Persons</button>
+      <Aux>
+          <button onClick={ () => { this.setState( { showPersons: true } ) } }>Show Persons</button>
           <Cockpit
             appTitle={this.props.title}
             showPersons={this.state.showPerson}
             persons={this.state.persons}
+            login={this.loginHandler}
             clicked={this.togglePersonHandler} />
-          {persons}
-          
-        </div>
-     
+            <AuthContext.Provider value={this.state.authenticated}>{persons}</AuthContext.Provider>
+        </Aux>        
     );
     // return React.createElement('div', null, React.createElement('h1', {className: 'App'}, 'Does this work now?'))
   }
 }
 
-export default App;
+export default withClass(App, classes.App);
